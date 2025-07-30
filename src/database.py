@@ -157,21 +157,28 @@ def store_ohlc_data(symbol: str, df: pd.DataFrame) -> int:
                   'ema_4', 'ema_9', 'ema_18', 'ema_50', 'ema_200']
         df_clean = df_with_emas[columns]
         
-        # Use INSERT OR REPLACE to handle duplicates
-        df_clean.to_sql('daily_ohlc', conn, if_exists='append', index=False, method='multi')
-        
-        # Remove duplicates (keeping latest)
+        # Use INSERT OR REPLACE to handle duplicates properly
         cursor = conn.cursor()
-        cursor.execute("""
-            DELETE FROM daily_ohlc 
-            WHERE id NOT IN (
-                SELECT MAX(id) 
-                FROM daily_ohlc 
-                GROUP BY symbol, date
-            )
-        """)
+        rows_affected = 0
         
-        rows_affected = cursor.rowcount
+        for _, row in df_clean.iterrows():
+            try:
+                cursor.execute("""
+                    INSERT OR REPLACE INTO daily_ohlc 
+                    (symbol, date, open, high, low, close, volume, traded_value, 
+                     ema_4, ema_9, ema_18, ema_50, ema_200)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    row['symbol'], row['date'], row['open'], row['high'], row['low'],
+                    row['close'], row['volume'], row['traded_value'],
+                    row.get('ema_4'), row.get('ema_9'), row.get('ema_18'), 
+                    row.get('ema_50'), row.get('ema_200')
+                ))
+                rows_affected += 1
+            except Exception as e:
+                logging.error(f"Error inserting row for {symbol} on {row['date']}: {e}")
+                continue
+        
         conn.commit()
         return rows_affected
         
