@@ -1,0 +1,3 @@
+Deployment trigger: 2025-07-30 09:05:00 UTC
+EMA data integration deployed
+Force GitHub Pages refresh
