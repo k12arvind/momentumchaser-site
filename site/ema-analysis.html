@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MomentumChaser — EMA Analysis (2025-07-30)</title>
+    <style>
+        body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin: 24px; }
+        h1 { font-size: 1.6rem; margin: 0 0 12px; }
+        .summary { color:#555; margin-bottom:14px; }
+        table { border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 16px; }
+        th, td { border: 1px solid #e5e5e5; padding: 8px; text-align: left; }
+        th { background:#fafafa; position: sticky; top:0; }
+        tr:nth-child(even) td { background: #fcfcfc; }
+        tr:hover td { background: #f0f9ff; }
+        .badge { display:inline-block; padding:2px 6px; border-radius:6px; background:#f3f4f6; }
+        footer { margin-top:24px; font-size:12px; color:#666; }
+        a { color:#2563eb; text-decoration:none; }
+        a:hover { text-decoration:underline; }
+        .trend-bullish { color: #10b981; }
+        .trend-bearish { color: #ef4444; }
+        .trend-neutral { color: #6b7280; }
+        .above-ema { color: #10b981; }
+        .below-ema { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <h1>MomentumChaser — EMA Analysis Dashboard</h1>
+    
+    <div class="summary">
+        <span class="badge">Updated: 2025-07-30 08:52</span>
+        &nbsp;|&nbsp;
+        <span class="badge">Symbols: 495</span>
+        &nbsp;|&nbsp;
+        <span class="badge">EMA Analysis: 4/9/18/50/200-day</span>
+        &nbsp;|&nbsp;
+        <a href="https://github.com/k12arvind/momentumchaser-site" target="_blank">Source</a>
+    </div>
+    
+    <div style="margin-bottom: 16px; padding: 12px; background: #f0f9ff; border-radius: 6px;">
+        <h3 style="margin: 0 0 8px 0; color: #1e40af;">EMA Analysis Features</h3>
+        <p style="margin: 0; font-size: 13px;">
+            <strong>Historical Data:</strong> 191+ trading days &nbsp;|&nbsp;
+            <strong>EMAs:</strong> 4, 9, 18, 50, 200-day exponential moving averages &nbsp;|&nbsp;
+            <strong>Signals:</strong> Above/below EMA levels, trend analysis &nbsp;|&nbsp;
+            <strong>Sorted:</strong> By trading volume (most active first)
+        </p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Close</th>
+                <th>Volume</th>
+                <th>EMA 9</th>
+                <th>EMA 50</th>
+                <th>Above EMA 9</th>
+                <th>Above EMA 50</th>
+                <th>Trend</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>WAAREEENER</strong></td>
+                <td style="font-weight: 600;">₹3172.60</td>
+                <td>9416K</td>
+                <td>₹3168.1</td>
+                <td>₹3171.2</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>HDFCBANK</strong></td>
+                <td style="font-weight: 600;">₹2021.60</td>
+                <td>9947K</td>
+                <td>₹2007.1</td>
+                <td>₹1967.5</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>AXISBANK</strong></td>
+                <td style="font-weight: 600;">₹1064.20</td>
+                <td>15599K</td>
+                <td>₹1098.3</td>
+                <td>₹1154.8</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>RELIANCE</strong></td>
+                <td style="font-weight: 600;">₹1417.10</td>
+                <td>10750K</td>
+                <td>₹1411.0</td>
+                <td>₹1423.7</td>
+                <td class="above-ema">✓</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>TCS</strong></td>
+                <td style="font-weight: 600;">₹3056.00</td>
+                <td>4785K</td>
+                <td>₹3123.0</td>
+                <td>₹3150.8</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>ICICIBANK</strong></td>
+                <td style="font-weight: 600;">₹1486.20</td>
+                <td>9776K</td>
+                <td>₹1471.0</td>
+                <td>₹1442.4</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>INDUSINDBK</strong></td>
+                <td style="font-weight: 600;">₹808.20</td>
+                <td>16766K</td>
+                <td>₹833.9</td>
+                <td>₹850.6</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>MAZDOCK</strong></td>
+                <td style="font-weight: 600;">₹2720.40</td>
+                <td>4587K</td>
+                <td>₹2902.6</td>
+                <td>₹3139.2</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>VBL</strong></td>
+                <td style="font-weight: 600;">₹512.15</td>
+                <td>24363K</td>
+                <td>₹487.7</td>
+                <td>₹469.3</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>INFY</strong></td>
+                <td style="font-weight: 600;">₹1513.70</td>
+                <td>7070K</td>
+                <td>₹1545.5</td>
+                <td>₹1574.6</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>AMBER</strong></td>
+                <td style="font-weight: 600;">₹7810.50</td>
+                <td>1350K</td>
+                <td>₹7502.4</td>
+                <td>₹7073.3</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>APARINDS</strong></td>
+                <td style="font-weight: 600;">₹9681.50</td>
+                <td>1057K</td>
+                <td>₹9097.8</td>
+                <td>₹8325.2</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>BAJFINANCE</strong></td>
+                <td style="font-weight: 600;">₹886.55</td>
+                <td>11323K</td>
+                <td>₹919.9</td>
+                <td>₹921.3</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>KOTAKBANK</strong></td>
+                <td style="font-weight: 600;">₹1972.70</td>
+                <td>5043K</td>
+                <td>₹2089.4</td>
+                <td>₹2163.1</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>BEL</strong></td>
+                <td style="font-weight: 600;">₹388.25</td>
+                <td>25307K</td>
+                <td>₹396.9</td>
+                <td>₹390.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>TATACHEM</strong></td>
+                <td style="font-weight: 600;">₹1000.00</td>
+                <td>9619K</td>
+                <td>₹954.0</td>
+                <td>₹933.7</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>HCLTECH</strong></td>
+                <td style="font-weight: 600;">₹1472.40</td>
+                <td>6223K</td>
+                <td>₹1515.4</td>
+                <td>₹1614.4</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>JIOFIN</strong></td>
+                <td style="font-weight: 600;">₹321.10</td>
+                <td>27086K</td>
+                <td>₹316.0</td>
+                <td>₹325.5</td>
+                <td class="above-ema">✓</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>ETERNAL</strong></td>
+                <td style="font-weight: 600;">₹306.55</td>
+                <td>23521K</td>
+                <td>₹295.8</td>
+                <td>₹264.1</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>BHARTIARTL</strong></td>
+                <td style="font-weight: 600;">₹1918.30</td>
+                <td>3748K</td>
+                <td>₹1924.2</td>
+                <td>₹1911.6</td>
+                <td class="below-ema">✗</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>BSE</strong></td>
+                <td style="font-weight: 600;">₹2487.10</td>
+                <td>2601K</td>
+                <td>₹2499.7</td>
+                <td>₹2519.3</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>HAL</strong></td>
+                <td style="font-weight: 600;">₹4498.00</td>
+                <td>1431K</td>
+                <td>₹4644.9</td>
+                <td>₹4769.5</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>TRENT</strong></td>
+                <td style="font-weight: 600;">₹5001.50</td>
+                <td>1285K</td>
+                <td>₹5175.8</td>
+                <td>₹5358.6</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>TORNTPHARM</strong></td>
+                <td style="font-weight: 600;">₹3768.10</td>
+                <td>1677K</td>
+                <td>₹3580.2</td>
+                <td>₹3417.9</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>IEX</strong></td>
+                <td style="font-weight: 600;">₹134.65</td>
+                <td>46588K</td>
+                <td>₹162.8</td>
+                <td>₹194.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>SBIN</strong></td>
+                <td style="font-weight: 600;">₹799.20</td>
+                <td>7833K</td>
+                <td>₹810.3</td>
+                <td>₹816.0</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>M&M</strong></td>
+                <td style="font-weight: 600;">₹3199.40</td>
+                <td>1824K</td>
+                <td>₹3217.7</td>
+                <td>₹3179.2</td>
+                <td class="below-ema">✗</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>GODIGIT</strong></td>
+                <td style="font-weight: 600;">₹360.80</td>
+                <td>15881K</td>
+                <td>₹353.0</td>
+                <td>₹340.6</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>COFORGE</strong></td>
+                <td style="font-weight: 600;">₹1720.50</td>
+                <td>3254K</td>
+                <td>₹1774.5</td>
+                <td>₹1790.2</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>LODHA</strong></td>
+                <td style="font-weight: 600;">₹1246.50</td>
+                <td>4143K</td>
+                <td>₹1320.8</td>
+                <td>₹1392.3</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>PAYTM</strong></td>
+                <td style="font-weight: 600;">₹1073.10</td>
+                <td>4756K</td>
+                <td>₹1054.9</td>
+                <td>₹979.8</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>HDFCAMC</strong></td>
+                <td style="font-weight: 600;">₹5627.50</td>
+                <td>816K</td>
+                <td>₹5530.8</td>
+                <td>₹5091.6</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>LAURUSLABS</strong></td>
+                <td style="font-weight: 600;">₹909.85</td>
+                <td>4989K</td>
+                <td>₹852.7</td>
+                <td>₹812.0</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>SHRIRAMFIN</strong></td>
+                <td style="font-weight: 600;">₹638.35</td>
+                <td>6858K</td>
+                <td>₹642.3</td>
+                <td>₹662.7</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>LT</strong></td>
+                <td style="font-weight: 600;">₹3495.60</td>
+                <td>1241K</td>
+                <td>₹3470.8</td>
+                <td>₹3486.8</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>TATAMOTORS</strong></td>
+                <td style="font-weight: 600;">₹692.35</td>
+                <td>6239K</td>
+                <td>₹687.7</td>
+                <td>₹691.2</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>CDSL</strong></td>
+                <td style="font-weight: 600;">₹1539.70</td>
+                <td>2790K</td>
+                <td>₹1632.8</td>
+                <td>₹1636.4</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>ASIANPAINT</strong></td>
+                <td style="font-weight: 600;">₹2401.50</td>
+                <td>1742K</td>
+                <td>₹2376.7</td>
+                <td>₹2355.8</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>MCX</strong></td>
+                <td style="font-weight: 600;">₹7839.50</td>
+                <td>469K</td>
+                <td>₹8057.6</td>
+                <td>₹8251.6</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>INDIGO</strong></td>
+                <td style="font-weight: 600;">₹5756.00</td>
+                <td>634K</td>
+                <td>₹5832.2</td>
+                <td>₹5902.2</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>BOSCHLTD</strong></td>
+                <td style="font-weight: 600;">₹39915.00</td>
+                <td>89K</td>
+                <td>₹38244.1</td>
+                <td>₹34596.2</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>MARUTI</strong></td>
+                <td style="font-weight: 600;">₹12469.00</td>
+                <td>285K</td>
+                <td>₹12468.0</td>
+                <td>₹12515.1</td>
+                <td class="above-ema">✓</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>ADANIGREEN</strong></td>
+                <td style="font-weight: 600;">₹1015.60</td>
+                <td>3489K</td>
+                <td>₹1013.3</td>
+                <td>₹999.5</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>CANBK</strong></td>
+                <td style="font-weight: 600;">₹110.09</td>
+                <td>32038K</td>
+                <td>₹111.3</td>
+                <td>₹109.2</td>
+                <td class="below-ema">✗</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>RBLBANK</strong></td>
+                <td style="font-weight: 600;">₹255.75</td>
+                <td>13017K</td>
+                <td>₹257.2</td>
+                <td>₹256.8</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>SUZLON</strong></td>
+                <td style="font-weight: 600;">₹61.79</td>
+                <td>53322K</td>
+                <td>₹64.0</td>
+                <td>₹65.6</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>WIPRO</strong></td>
+                <td style="font-weight: 600;">₹251.80</td>
+                <td>12923K</td>
+                <td>₹257.1</td>
+                <td>₹257.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>DIXON</strong></td>
+                <td style="font-weight: 600;">₹16784.00</td>
+                <td>191K</td>
+                <td>₹16470.5</td>
+                <td>₹15529.5</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>PPLPHARMA</strong></td>
+                <td style="font-weight: 600;">₹205.61</td>
+                <td>15371K</td>
+                <td>₹205.8</td>
+                <td>₹203.5</td>
+                <td class="below-ema">✗</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>COROMANDEL</strong></td>
+                <td style="font-weight: 600;">₹2495.40</td>
+                <td>1229K</td>
+                <td>₹2402.9</td>
+                <td>₹2322.0</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>ADANIPOWER</strong></td>
+                <td style="font-weight: 600;">₹592.55</td>
+                <td>5170K</td>
+                <td>₹586.7</td>
+                <td>₹574.9</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>ITC</strong></td>
+                <td style="font-weight: 600;">₹408.45</td>
+                <td>6811K</td>
+                <td>₹413.6</td>
+                <td>₹419.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>OLAELEC</strong></td>
+                <td style="font-weight: 600;">₹41.71</td>
+                <td>65134K</td>
+                <td>₹41.7</td>
+                <td>₹40.8</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>BPCL</strong></td>
+                <td style="font-weight: 600;">₹334.95</td>
+                <td>7809K</td>
+                <td>₹338.8</td>
+                <td>₹329.0</td>
+                <td class="below-ema">✗</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>ULTRACEMCO</strong></td>
+                <td style="font-weight: 600;">₹12221.00</td>
+                <td>208K</td>
+                <td>₹12340.5</td>
+                <td>₹12468.3</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>UPL</strong></td>
+                <td style="font-weight: 600;">₹726.05</td>
+                <td>3504K</td>
+                <td>₹714.4</td>
+                <td>₹678.9</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>GAIL</strong></td>
+                <td style="font-weight: 600;">₹182.98</td>
+                <td>13852K</td>
+                <td>₹184.2</td>
+                <td>₹186.4</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>NTPC</strong></td>
+                <td style="font-weight: 600;">₹334.60</td>
+                <td>7551K</td>
+                <td>₹337.6</td>
+                <td>₹340.6</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>DRREDDY</strong></td>
+                <td style="font-weight: 600;">₹1299.80</td>
+                <td>1943K</td>
+                <td>₹1274.0</td>
+                <td>₹1268.6</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>APOLLOHOSP</strong></td>
+                <td style="font-weight: 600;">₹7456.00</td>
+                <td>336K</td>
+                <td>₹7377.1</td>
+                <td>₹7201.2</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>KALYANKJIL</strong></td>
+                <td style="font-weight: 600;">₹604.40</td>
+                <td>4141K</td>
+                <td>₹598.9</td>
+                <td>₹591.3</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>TATASTEEL</strong></td>
+                <td style="font-weight: 600;">₹161.69</td>
+                <td>15262K</td>
+                <td>₹161.3</td>
+                <td>₹159.8</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>NETWEB</strong></td>
+                <td style="font-weight: 600;">₹1972.80</td>
+                <td>1246K</td>
+                <td>₹1920.1</td>
+                <td>₹1861.5</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>SWIGGY</strong></td>
+                <td style="font-weight: 600;">₹413.80</td>
+                <td>5833K</td>
+                <td>₹406.6</td>
+                <td>₹391.6</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>POWERINDIA</strong></td>
+                <td style="font-weight: 600;">₹19790.00</td>
+                <td>118K</td>
+                <td>₹19426.1</td>
+                <td>₹19387.0</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>UNITDSPR</strong></td>
+                <td style="font-weight: 600;">₹1324.00</td>
+                <td>1769K</td>
+                <td>₹1337.4</td>
+                <td>₹1369.0</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>FIVESTAR</strong></td>
+                <td style="font-weight: 600;">₹649.35</td>
+                <td>3588K</td>
+                <td>₹702.4</td>
+                <td>₹732.5</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>COLPAL</strong></td>
+                <td style="font-weight: 600;">₹2215.00</td>
+                <td>1047K</td>
+                <td>₹2283.0</td>
+                <td>₹2406.5</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>GLENMARK</strong></td>
+                <td style="font-weight: 600;">₹2158.00</td>
+                <td>1066K</td>
+                <td>₹2143.0</td>
+                <td>₹1850.4</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>TVSMOTOR</strong></td>
+                <td style="font-weight: 600;">₹2801.80</td>
+                <td>820K</td>
+                <td>₹2808.7</td>
+                <td>₹2825.5</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>JSWSTEEL</strong></td>
+                <td style="font-weight: 600;">₹1034.90</td>
+                <td>2215K</td>
+                <td>₹1032.2</td>
+                <td>₹1034.1</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>SUNPHARMA</strong></td>
+                <td style="font-weight: 600;">₹1710.50</td>
+                <td>1325K</td>
+                <td>₹1701.0</td>
+                <td>₹1717.0</td>
+                <td class="above-ema">✓</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>BIOCON</strong></td>
+                <td style="font-weight: 600;">₹398.15</td>
+                <td>5529K</td>
+                <td>₹392.3</td>
+                <td>₹367.3</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>IDEA</strong></td>
+                <td style="font-weight: 600;">₹7.19</td>
+                <td>298376K</td>
+                <td>₹7.3</td>
+                <td>₹7.4</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>VMM</strong></td>
+                <td style="font-weight: 600;">₹136.64</td>
+                <td>15636K</td>
+                <td>₹137.4</td>
+                <td>₹133.6</td>
+                <td class="below-ema">✗</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>FEDERALBNK</strong></td>
+                <td style="font-weight: 600;">₹205.21</td>
+                <td>10354K</td>
+                <td>₹209.5</td>
+                <td>₹207.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>WELCORP</strong></td>
+                <td style="font-weight: 600;">₹924.55</td>
+                <td>2296K</td>
+                <td>₹906.0</td>
+                <td>₹924.0</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>TECHM</strong></td>
+                <td style="font-weight: 600;">₹1453.80</td>
+                <td>1458K</td>
+                <td>₹1504.0</td>
+                <td>₹1571.5</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>PERSISTENT</strong></td>
+                <td style="font-weight: 600;">₹5176.50</td>
+                <td>406K</td>
+                <td>₹5357.2</td>
+                <td>₹5586.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>MAXHEALTH</strong></td>
+                <td style="font-weight: 600;">₹1274.30</td>
+                <td>1643K</td>
+                <td>₹1257.1</td>
+                <td>₹1250.9</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>UNIONBANK</strong></td>
+                <td style="font-weight: 600;">₹132.73</td>
+                <td>15736K</td>
+                <td>₹136.9</td>
+                <td>₹138.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>HINDALCO</strong></td>
+                <td style="font-weight: 600;">₹692.70</td>
+                <td>2985K</td>
+                <td>₹688.3</td>
+                <td>₹670.4</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>AFFLE</strong></td>
+                <td style="font-weight: 600;">₹1985.40</td>
+                <td>1036K</td>
+                <td>₹1899.6</td>
+                <td>₹1866.8</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>CIPLA</strong></td>
+                <td style="font-weight: 600;">₹1574.00</td>
+                <td>1303K</td>
+                <td>₹1520.5</td>
+                <td>₹1498.8</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>BRITANNIA</strong></td>
+                <td style="font-weight: 600;">₹5626.00</td>
+                <td>363K</td>
+                <td>₹5676.1</td>
+                <td>₹5637.5</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>GRASIM</strong></td>
+                <td style="font-weight: 600;">₹2743.00</td>
+                <td>743K</td>
+                <td>₹2736.8</td>
+                <td>₹2727.0</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>BDL</strong></td>
+                <td style="font-weight: 600;">₹1623.10</td>
+                <td>1253K</td>
+                <td>₹1691.9</td>
+                <td>₹1776.3</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>HINDPETRO</strong></td>
+                <td style="font-weight: 600;">₹425.80</td>
+                <td>4743K</td>
+                <td>₹429.3</td>
+                <td>₹437.2</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>TATAPOWER</strong></td>
+                <td style="font-weight: 600;">₹399.85</td>
+                <td>5038K</td>
+                <td>₹400.8</td>
+                <td>₹401.0</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>NESTLEIND</strong></td>
+                <td style="font-weight: 600;">₹2223.70</td>
+                <td>900K</td>
+                <td>₹2332.4</td>
+                <td>₹2400.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>AMBUJACEM</strong></td>
+                <td style="font-weight: 600;">₹610.05</td>
+                <td>3278K</td>
+                <td>₹609.5</td>
+                <td>₹579.3</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>CUMMINSIND</strong></td>
+                <td style="font-weight: 600;">₹3535.20</td>
+                <td>561K</td>
+                <td>₹3549.3</td>
+                <td>₹3366.7</td>
+                <td class="below-ema">✗</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>COCHINSHIP</strong></td>
+                <td style="font-weight: 600;">₹1765.50</td>
+                <td>1124K</td>
+                <td>₹1836.0</td>
+                <td>₹1918.8</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>POWERGRID</strong></td>
+                <td style="font-weight: 600;">₹293.10</td>
+                <td>6586K</td>
+                <td>₹295.3</td>
+                <td>₹298.0</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>CHOLAFIN</strong></td>
+                <td style="font-weight: 600;">₹1484.80</td>
+                <td>1288K</td>
+                <td>₹1525.0</td>
+                <td>₹1552.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>JBCHEPHARM</strong></td>
+                <td style="font-weight: 600;">₹1802.60</td>
+                <td>1058K</td>
+                <td>₹1707.7</td>
+                <td>₹1643.7</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>GVT&D</strong></td>
+                <td style="font-weight: 600;">₹2473.40</td>
+                <td>770K</td>
+                <td>₹2435.5</td>
+                <td>₹2262.7</td>
+                <td class="above-ema">✓</td>
+                <td class="above-ema">✓</td>
+                <td class="trend-bullish">📈 Bullish</td>
+            </tr>
+            <tr>
+                <td><strong>GRSE</strong></td>
+                <td style="font-weight: 600;">₹2492.80</td>
+                <td>754K</td>
+                <td>₹2593.3</td>
+                <td>₹2697.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>OBEROIRLTY</strong></td>
+                <td style="font-weight: 600;">₹1664.80</td>
+                <td>1123K</td>
+                <td>₹1734.7</td>
+                <td>₹1813.3</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+            <tr>
+                <td><strong>COALINDIA</strong></td>
+                <td style="font-weight: 600;">₹383.65</td>
+                <td>4872K</td>
+                <td>₹384.3</td>
+                <td>₹388.9</td>
+                <td class="below-ema">✗</td>
+                <td class="below-ema">✗</td>
+                <td class="trend-bearish">📉 Bearish</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <footer>
+        <p><strong>EMA Analysis:</strong> Exponential Moving Averages calculated from 191+ days of historical data.</p>
+        <p><strong>Trend Signals:</strong> Bullish (EMA 4 > EMA 9), Bearish (EMA 4 < EMA 9), Neutral (sideways).</p>
+        <p><strong>Data Source:</strong> Kite Connect API | <strong>Built with:</strong> Python, pandas, SQLite</p>
+    </footer>
+</body>
+</html>
