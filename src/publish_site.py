@@ -25,7 +25,7 @@ def get_available_dates():
         archive_files = [f.stem for f in ARCHIVE.glob("*.csv") if f.is_file()]
     return sorted(archive_files, reverse=True)
 
-def render_html(date_str, df: pd.DataFrame) -> str:
+def render_html(date_str, df: pd.DataFrame, ema_df: pd.DataFrame = None) -> str:
     title = f"MomentumChaser — Daily Swing Scan ({date_str})"
     available_dates = get_available_dates()
     
@@ -577,15 +577,108 @@ function closeSymbolModal() {{
     document.getElementById('symbolModal').style.display = 'none';
 }}
 
-function loadDefaultData() {{
-    const defaultTable = `{df.to_html(index=False, escape=False, classes="").replace('class=""', '')}`;
-    document.getElementById('dataContainer').innerHTML = defaultTable;
+async function loadEMAData() {{
+    // Try to load EMA data for enhanced display
+    try {{
+        const response = await fetch('data/latest_ema.csv');
+        if (response.ok) {{
+            const csvText = await response.text();
+            const emaTable = csvToEMATable(csvText);
+            document.getElementById('dataContainer').innerHTML = emaTable;
+            return true;
+        }}
+    }} catch (error) {{
+        console.log('EMA data not available, using default scan results');
+    }}
+    return false;
+}}
+
+function csvToEMATable(csvText) {{
+    const lines = csvText.trim().split('\\\\n');
+    const headers = lines[0].split(',');
     
-    // Make symbols clickable in the default table
-    const symbolCells = document.querySelectorAll('#dataContainer table tbody tr td:first-child');
-    symbolCells.forEach(cell => {{
-        const symbol = cell.textContent.trim();
-        cell.innerHTML = `<span class="symbol-link" onclick="showSymbolDetails('${{symbol}}')">${{symbol}}</span>`;
+    // Enhanced headers for EMA display
+    const displayHeaders = {{
+        'symbol': 'Symbol',
+        'close': 'Close',
+        'volume': 'Volume',
+        'ema_4': 'EMA 4',
+        'ema_9': 'EMA 9',
+        'ema_18': 'EMA 18', 
+        'ema_50': 'EMA 50',
+        'ema_200': 'EMA 200',
+        'above_ema_9': 'Above EMA 9',
+        'above_ema_50': 'Above EMA 50',
+        'ema_trend': 'Trend'
+    }};
+    
+    let html = '<table><thead><tr>';
+    const displayCols = ['symbol', 'close', 'volume', 'ema_9', 'ema_50', 'above_ema_9', 'above_ema_50', 'ema_trend'];
+    displayCols.forEach(col => {{
+        html += `<th>${{displayHeaders[col] || col}}</th>`;
+    }});
+    html += '</tr></thead><tbody>';
+    
+    // Create header index map
+    const headerMap = {{}};
+    headers.forEach((header, index) => {{
+        headerMap[header.replace(/"/g, '')] = index;
+    }});
+    
+    for (let i = 1; i < lines.length && i <= 101; i++) {{ // Limit to top 100 + header
+        const cells = lines[i].split(',');
+        html += '<tr>';
+        
+        displayCols.forEach(col => {{
+            const cellIndex = headerMap[col];
+            if (cellIndex !== undefined) {{
+                let cellValue = cells[cellIndex]?.replace(/"/g, '') || '';
+                
+                if (col === 'symbol') {{
+                    html += `<td><span class="symbol-link" onclick="showSymbolDetails('${{cellValue}}')">${{cellValue}}</span></td>`;
+                }} else if (col === 'close' && !isNaN(cellValue)) {{
+                    html += `<td style="font-weight: 600;">₹${{parseFloat(cellValue).toFixed(2)}}</td>`;
+                }} else if (col === 'volume' && !isNaN(cellValue)) {{
+                    html += `<td>${{Math.round(parseFloat(cellValue) / 1000)}}K</td>`;
+                }} else if (col.startsWith('ema_') && !isNaN(cellValue)) {{
+                    html += `<td>₹${{parseFloat(cellValue).toFixed(1)}}</td>`;
+                }} else if (col.startsWith('above_ema_')) {{
+                    const isAbove = cellValue.toLowerCase() === 'true';
+                    const color = isAbove ? '#10b981' : '#ef4444';
+                    const symbol = isAbove ? '✓' : '✗';
+                    html += `<td style="color: ${{color}};">${{symbol}}</td>`;
+                }} else if (col === 'ema_trend') {{
+                    const trendColor = cellValue === 'bullish' ? '#10b981' : cellValue === 'bearish' ? '#ef4444' : '#6b7280';
+                    const trendIcon = cellValue === 'bullish' ? '📈' : cellValue === 'bearish' ? '📉' : '➡️';
+                    html += `<td style="color: ${{trendColor}};">${{trendIcon}} ${{cellValue}}</td>`;
+                }} else {{
+                    html += `<td>${{cellValue}}</td>`;
+                }}
+            }} else {{
+                html += '<td>-</td>';
+            }}
+        }});
+        html += '</tr>';
+    }}
+    
+    html += '</tbody></table>';
+    return html;
+}}
+
+function loadDefaultData() {{
+    // First try to load EMA data, fallback to default scan results
+    loadEMAData().then(success => {{
+        if (!success) {{
+            const defaultTable = `{df.to_html(index=False, escape=False, classes="").replace('class=""', '')}`;
+            document.getElementById('dataContainer').innerHTML = defaultTable;
+            
+            // Make symbols clickable in the default table
+            const symbolCells = document.querySelectorAll('#dataContainer table tbody tr td:first-child');
+            symbolCells.forEach(cell => {{
+                const symbol = cell.textContent.trim();
+                cell.innerHTML = `<span class="symbol-link" onclick="showSymbolDetails('${{symbol}}')">${{symbol}}</span>`;
+            }});
+        }}
     }});
 }}
 
@@ -630,12 +723,27 @@ def main():
     if "score" in df.columns:
         df = df.sort_values(["score","box_span_pct"], ascending=[False, True])
 
+    # Try to load EMA data for enhanced display
+    ema_df = None
+    ema_file = DATA_DIR / "latest_ema.csv"
+    if ema_file.exists():
+        try:
+            ema_df = pd.read_csv(ema_file)
+            print(f"Loaded EMA data with {len(ema_df)} symbols")
+        except Exception as e:
+            print(f"Could not load EMA data: {e}")
+
     # write index.html
-    html = render_html(date_str, df)
+    html = render_html(date_str, df, ema_df)
     (SITE / "index.html").write_text(html, encoding="utf-8")
 
     # copy CSVs
     df.to_csv(DATA_DIR / "latest.csv", index=False)
+    
+    # Copy EMA CSV if available
+    if ema_df is not None:
+        ema_df.to_csv(DATA_DIR / "latest_ema.csv", index=False)
+    
     # also save an archived CSV
     df.to_csv(ARCHIVE / f"{date_str}.csv", index=False)
 
