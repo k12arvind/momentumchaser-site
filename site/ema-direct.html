@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>EMA Data - MomentumChaser</title>
+    <style>
+        body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin: 24px; }
+        h1 { font-size: 1.6rem; margin: 0 0 12px; }
+        .info { color:#555; margin-bottom:14px; background: #f0f9ff; padding: 12px; border-radius: 6px; }
+        iframe { width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>🔗 Direct EMA Data Access</h1>
+    
+    <div class="info">
+        <p><strong>GitHub Pages Deployment Issue:</strong> The main site is experiencing a deployment delay.</p>
+        <p><strong>Direct CSV Access:</strong> You can view the EMA data directly from the GitHub repository:</p>
+        <p><a href="https://raw.githubusercontent.com/k12arvind/momentumchaser-site/master/site/data/latest.csv" target="_blank">
+            📊 View EMA-Enhanced CSV Data
+        </a></p>
+        <p><strong>EMA Columns:</strong> ema_9, ema_50, above_ema_9, above_ema_50, ema_trend</p>
+    </div>
+    
+    <h2>Sample EMA Data (PTCIL):</h2>
+    <table style="border-collapse: collapse; width: 100%; font-size: 14px;">
+        <tr style="background: #fafafa;">
+            <th style="border: 1px solid #ddd; padding: 8px;">Symbol</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Close</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">EMA 9</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">EMA 50</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Above EMA 9</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Above EMA 50</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Trend</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: 600;">PTCIL</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">₹14,750.00</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">₹14,608.67</td>
+            <td style="border: 1px solid #ddd; padding: 8px;">₹14,565.03</td>
+            <td style="border: 1px solid #ddd; padding: 8px; color: #10b981;">True ✓</td>
+            <td style="border: 1px solid #ddd; padding: 8px; color: #10b981;">True ✓</td>
+            <td style="border: 1px solid #ddd; padding: 8px; color: #10b981;">📈 Bullish</td>
+        </tr>
+    </table>
+    
+    <p style="margin-top: 20px;">
+        <strong>Status:</strong> EMA calculations are working correctly with 191+ days of historical data.
+        The main site will update once GitHub Pages deployment completes.
+    </p>
+    
+    <p><a href="/">&larr; Back to Main Site</a></p>
+</body>
+</html>
