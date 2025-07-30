@@ -1,0 +1,2 @@
+Deployed at: 2025-07-30 08:26:00 UTC
+EMA functionality added
