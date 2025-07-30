@@ -207,6 +207,99 @@ def get_bulk_data(date):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/symbol/<symbol>/last10days')
+def get_symbol_last_10_days(symbol):
+    """Get last 10 trading days of OHLC data for a specific symbol."""
+    try:
+        symbol = symbol.upper()
+        
+        # Get the most recent 10 trading days from database
+        from datetime import datetime, timedelta
+        end_date = datetime.now().strftime('%Y-%m-%d')
+        # Start from 20 days ago to ensure we get 10 trading days
+        start_date = (datetime.now() - timedelta(days=20)).strftime('%Y-%m-%d')
+        
+        df = get_ohlc_data(symbol, start_date, end_date)
+        if df.empty:
+            return jsonify({'error': f'No data found for symbol {symbol}'}), 404
+        
+        # Get the last 10 records (most recent trading days)
+        df_last_10 = df.tail(10)
+        
+        # Convert DataFrame to records
+        data = df_last_10.to_dict('records')
+        
+        # Convert datetime objects to strings for JSON serialization
+        for record in data:
+            if 'date' in record and hasattr(record['date'], 'isoformat'):
+                record['date'] = record['date'].isoformat()
+            # Add percentage change calculation
+            if len(data) > 1:
+                prev_close = None
+                for i, record in enumerate(data):
+                    if i > 0:
+                        prev_close = data[i-1]['close']
+                        change = record['close'] - prev_close
+                        change_pct = (change / prev_close) * 100 if prev_close else 0
+                        record['change'] = round(change, 2)
+                        record['change_pct'] = round(change_pct, 2)
+                    else:
+                        record['change'] = 0
+                        record['change_pct'] = 0
+        
+        return jsonify({
+            'symbol': symbol,
+            'period': 'Last 10 trading days',
+            'count': len(data),
+            'data': data
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/bulk-last10days')
+def get_bulk_last_10_days():
+    """Get last 10 days data for multiple symbols."""
+    try:
+        # Get symbols from query parameter (comma-separated)
+        symbols_param = request.args.get('symbols', '')
+        if not symbols_param:
+            return jsonify({'error': 'symbols parameter is required'}), 400
+        
+        symbols = [s.strip().upper() for s in symbols_param.split(',')]
+        
+        results = {}
+        for symbol in symbols:
+            try:
+                # Reuse the logic from single symbol endpoint
+                from datetime import datetime, timedelta
+                end_date = datetime.now().strftime('%Y-%m-%d')
+                start_date = (datetime.now() - timedelta(days=20)).strftime('%Y-%m-%d')
+                
+                df = get_ohlc_data(symbol, start_date, end_date)
+                if not df.empty:
+                    df_last_10 = df.tail(10)
+                    data = df_last_10.to_dict('records')
+                    
+                    # Convert datetime objects to strings
+                    for record in data:
+                        if 'date' in record and hasattr(record['date'], 'isoformat'):
+                            record['date'] = record['date'].isoformat()
+                    
+                    results[symbol] = {
+                        'count': len(data),
+                        'data': data
+                    }
+            except Exception as e:
+                results[symbol] = {'error': str(e)}
+        
+        return jsonify({
+            'period': 'Last 10 trading days',
+            'requested_symbols': symbols,
+            'results': results
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 # Serve static files (for the frontend)
 @app.route('/')
 def serve_index():
