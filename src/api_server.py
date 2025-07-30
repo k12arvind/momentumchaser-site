@@ -209,7 +209,7 @@ def get_bulk_data(date):
 
 @app.route('/api/symbol/<symbol>/last10days')
 def get_symbol_last_10_days(symbol):
-    """Get last 10 trading days of OHLC data for a specific symbol."""
+    """Get last 10 trading days of OHLC and EMA data for a specific symbol."""
     try:
         symbol = symbol.upper()
         
@@ -229,7 +229,7 @@ def get_symbol_last_10_days(symbol):
         # Convert DataFrame to records
         data = df_last_10.to_dict('records')
         
-        # Convert datetime objects to strings for JSON serialization
+        # Convert datetime objects to strings for JSON serialization and add change calculations
         for record in data:
             if 'date' in record and hasattr(record['date'], 'isoformat'):
                 record['date'] = record['date'].isoformat()
@@ -246,6 +246,20 @@ def get_symbol_last_10_days(symbol):
                     else:
                         record['change'] = 0
                         record['change_pct'] = 0
+                    
+                    # Add EMA trend analysis
+                    close = record['close']
+                    ema_4 = record.get('ema_4')
+                    ema_9 = record.get('ema_9') 
+                    ema_18 = record.get('ema_18')
+                    ema_50 = record.get('ema_50')
+                    ema_200 = record.get('ema_200')
+                    
+                    # EMA trend signals
+                    record['above_ema_9'] = bool(close > ema_9) if ema_9 else None
+                    record['above_ema_50'] = bool(close > ema_50) if ema_50 else None
+                    record['above_ema_200'] = bool(close > ema_200) if ema_200 else None
+                    record['ema_trend'] = 'bullish' if (ema_4 and ema_9 and ema_4 > ema_9) else 'bearish' if (ema_4 and ema_9 and ema_4 < ema_9) else 'neutral'
         
         return jsonify({
             'symbol': symbol,
@@ -297,6 +311,88 @@ def get_bulk_last_10_days():
             'requested_symbols': symbols,
             'results': results
         })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/symbol/<symbol>/emas')
+def get_symbol_emas(symbol):
+    """Get current EMA values for a specific symbol."""
+    try:
+        symbol = symbol.upper()
+        
+        # Get the most recent data
+        df = get_ohlc_data(symbol)
+        if df.empty:
+            return jsonify({'error': f'No data found for symbol {symbol}'}), 404
+        
+        # Get the latest record
+        latest = df.iloc[-1]
+        
+        ema_data = {
+            'symbol': symbol,
+            'date': latest['date'].isoformat() if hasattr(latest['date'], 'isoformat') else str(latest['date']),
+            'close': latest['close'],
+            'emas': {
+                'ema_4': latest.get('ema_4'),
+                'ema_9': latest.get('ema_9'),
+                'ema_18': latest.get('ema_18'), 
+                'ema_50': latest.get('ema_50'),
+                'ema_200': latest.get('ema_200')
+            },
+            'signals': {
+                'above_ema_9': bool(latest['close'] > latest.get('ema_9', 0)) if latest.get('ema_9') else None,
+                'above_ema_50': bool(latest['close'] > latest.get('ema_50', 0)) if latest.get('ema_50') else None,
+                'above_ema_200': bool(latest['close'] > latest.get('ema_200', 0)) if latest.get('ema_200') else None,
+                'short_term_trend': 'bullish' if (latest.get('ema_4', 0) > latest.get('ema_9', 0)) else 'bearish',
+                'long_term_trend': 'bullish' if (latest.get('ema_50', 0) > latest.get('ema_200', 0)) else 'bearish'
+            }
+        }
+        
+        return jsonify(ema_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/data/<date>/with-emas')
+def get_date_data_with_emas(date):
+    """Get all OHLC and EMA data for a specific date."""
+    try:
+        # Validate date format
+        datetime.strptime(date, '%Y-%m-%d')
+        
+        # Get optional limit parameter
+        limit = request.args.get('limit', type=int)
+        
+        df = get_data_for_date(date, limit)
+        if df.empty:
+            return jsonify({'error': f'No data found for date {date}'}), 404
+        
+        # Convert DataFrame to records
+        data = df.to_dict('records')
+        
+        # Convert datetime objects to strings for JSON serialization
+        for record in data:
+            if 'date' in record and hasattr(record['date'], 'isoformat'):
+                record['date'] = record['date'].isoformat()
+            
+            # Add EMA trend signals for each symbol
+            close = record['close']
+            ema_4 = record.get('ema_4')
+            ema_9 = record.get('ema_9') 
+            ema_50 = record.get('ema_50')
+            ema_200 = record.get('ema_200')
+            
+            record['above_ema_9'] = bool(close > ema_9) if ema_9 else None
+            record['above_ema_50'] = bool(close > ema_50) if ema_50 else None
+            record['above_ema_200'] = bool(close > ema_200) if ema_200 else None
+            record['ema_trend'] = 'bullish' if (ema_4 and ema_9 and ema_4 > ema_9) else 'bearish' if (ema_4 and ema_9 and ema_4 < ema_9) else 'neutral'
+        
+        return jsonify({
+            'date': date,
+            'count': len(data),
+            'data': data
+        })
+    except ValueError:
+        return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

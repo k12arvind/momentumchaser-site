@@ -296,7 +296,7 @@ async function loadOHLCData(date) {{
     
     showLoading();
     try {{
-        const response = await fetch(`${{apiBaseUrl}}/data/${{date}}`);
+        const response = await fetch(`${{apiBaseUrl}}/data/${{date}}/with-emas`);
         if (!response.ok) {{
             throw new Error(`No OHLC data found for ${{date}}`);
         }}
@@ -336,23 +336,31 @@ function renderDataSummary(summary) {{
 }}
 
 function renderOHLCTable(data) {{
-    const headers = ['Symbol', 'Open', 'High', 'Low', 'Close', 'Volume', 'Traded Value (Cr)'];
+    const headers = ['Symbol', 'Close', 'Volume', 'EMA 4', 'EMA 9', 'EMA 18', 'EMA 50', 'Above EMA 9', 'Above EMA 50', 'Trend'];
     
-    let html = '<table><thead><tr>';
+    let html = '<table style="font-size: 13px;"><thead><tr>';
     headers.forEach(header => {{
         html += `<th>${{header}}</th>`;
     }});
     html += '</tr></thead><tbody>';
     
     data.forEach(row => {{
+        const trendClass = row.ema_trend === 'bullish' ? 'color: #10b981;' : row.ema_trend === 'bearish' ? 'color: #ef4444;' : 'color: #6b7280;';
+        const trendIcon = row.ema_trend === 'bullish' ? '📈' : row.ema_trend === 'bearish' ? '📉' : '➡️';
+        const above9Class = row.above_ema_9 ? 'color: #10b981;' : 'color: #ef4444;';
+        const above50Class = row.above_ema_50 ? 'color: #10b981;' : 'color: #ef4444;';
+        
         html += '<tr>';
         html += `<td><span class="symbol-link" onclick="showSymbolDetails('${{row.symbol}}')">${{row.symbol}}</span></td>`;
-        html += `<td>₹${{row.open.toFixed(2)}}</td>`;
-        html += `<td>₹${{row.high.toFixed(2)}}</td>`;
-        html += `<td>₹${{row.low.toFixed(2)}}</td>`;
-        html += `<td>₹${{row.close.toFixed(2)}}</td>`;
-        html += `<td>${{row.volume.toLocaleString()}}</td>`;
-        html += `<td>₹${{row.traded_value_cr}}</td>`;
+        html += `<td style="font-weight: 600;">₹${{row.close.toFixed(2)}}</td>`;
+        html += `<td>${{(row.volume / 1000).toFixed(0)}}K</td>`;
+        html += `<td>₹${{row.ema_4 ? row.ema_4.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td>₹${{row.ema_9 ? row.ema_9.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td>₹${{row.ema_18 ? row.ema_18.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td>₹${{row.ema_50 ? row.ema_50.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td style="${{above9Class}}">${{row.above_ema_9 ? '✓' : '✗'}}</td>`;
+        html += `<td style="${{above50Class}}">${{row.above_ema_50 ? '✓' : '✗'}}</td>`;
+        html += `<td style="${{trendClass}}">${{trendIcon}} ${{row.ema_trend || 'neutral'}}</td>`;
         html += '</tr>';
     }});
     
@@ -475,6 +483,14 @@ function render10DayOHLCTable(data, symbol) {{
     const maxHigh = Math.max(...data.map(d => d.high));
     const minLow = Math.min(...data.map(d => d.low));
     
+    // EMA analysis
+    const currentClose = latestData.close;
+    const ema4 = latestData.ema_4;
+    const ema9 = latestData.ema_9;
+    const ema18 = latestData.ema_18;
+    const ema50 = latestData.ema_50;
+    const ema200 = latestData.ema_200;
+    
     let html = `
         <div style="margin-bottom: 20px; padding: 12px; background: #f0f9ff; border-radius: 6px;">
             <h4 style="margin: 0 0 8px 0;">10-Day Summary for ${{symbol}}</h4>
@@ -485,24 +501,58 @@ function render10DayOHLCTable(data, symbol) {{
                 <div><strong>Lowest:</strong> ₹${{minLow.toFixed(2)}}</div>
             </div>
         </div>
+        
+        <div style="margin-bottom: 20px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+            <h4 style="margin: 0 0 8px 0; color: #1e40af;">EMA Analysis (Latest)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 12px;">
+                <div><strong>EMA 4:</strong> ₹${{ema4 ? ema4.toFixed(2) : 'N/A'}}</div>
+                <div><strong>EMA 9:</strong> ₹${{ema9 ? ema9.toFixed(2) : 'N/A'}}</div>
+                <div><strong>EMA 18:</strong> ₹${{ema18 ? ema18.toFixed(2) : 'N/A'}}</div>
+                <div><strong>EMA 50:</strong> ₹${{ema50 ? ema50.toFixed(2) : 'N/A'}}</div>
+                <div><strong>EMA 200:</strong> ₹${{ema200 ? ema200.toFixed(2) : 'N/A'}}</div>
+                <div><strong>Current:</strong> ₹${{currentClose.toFixed(2)}}</div>
+            </div>
+            <div style="margin-top: 8px; font-size: 12px;">
+                <span style="color: ${{latestData.above_ema_9 ? '#10b981' : '#ef4444'}};">
+                    <strong>Above EMA 9:</strong> ${{latestData.above_ema_9 ? 'Yes ✓' : 'No ✗'}}
+                </span>
+                &nbsp;|&nbsp;
+                <span style="color: ${{latestData.above_ema_50 ? '#10b981' : '#ef4444'}};">
+                    <strong>Above EMA 50:</strong> ${{latestData.above_ema_50 ? 'Yes ✓' : 'No ✗'}}
+                </span>
+                &nbsp;|&nbsp;
+                <span style="color: ${{latestData.above_ema_200 ? '#10b981' : '#ef4444'}};">
+                    <strong>Above EMA 200:</strong> ${{latestData.above_ema_200 ? 'Yes ✓' : 'No ✗'}}
+                </span>
+            </div>
+            <div style="margin-top: 8px; text-align: center;">
+                <span style="color: ${{latestData.ema_trend === 'bullish' ? '#10b981' : latestData.ema_trend === 'bearish' ? '#ef4444' : '#6b7280'}}; font-weight: 600;">
+                    Short-term Trend: ${{latestData.ema_trend.toUpperCase()}}
+                </span>
+            </div>
+        </div>
     `;
     
-    // Create detailed table
-    html += '<table style="font-size: 12px; width: 100%;"><thead><tr>';
-    html += '<th>Date</th><th>Open</th><th>High</th><th>Low</th><th>Close</th><th>Volume</th><th>Change</th><th>Change %</th>';
+    // Create detailed table with EMA data
+    html += '<table style="font-size: 11px; width: 100%; overflow-x: auto;"><thead><tr>';
+    html += '<th>Date</th><th>Close</th><th>Volume</th><th>Change %</th><th>EMA 4</th><th>EMA 9</th><th>EMA 18</th><th>EMA 50</th><th>Trend</th>';
     html += '</tr></thead><tbody>';
     
     data.forEach(row => {{
         const changeClass = row.change > 0 ? 'color: #10b981;' : row.change < 0 ? 'color: #ef4444;' : '';
+        const trendClass = row.ema_trend === 'bullish' ? 'color: #10b981;' : row.ema_trend === 'bearish' ? 'color: #ef4444;' : 'color: #6b7280;';
+        const trendIcon = row.ema_trend === 'bullish' ? '📈' : row.ema_trend === 'bearish' ? '📉' : '➡️';
+        
         html += '<tr>';
         html += `<td>${{row.date.split('T')[0]}}</td>`;
-        html += `<td>₹${{row.open.toFixed(2)}}</td>`;
-        html += `<td style="color: #10b981;">₹${{row.high.toFixed(2)}}</td>`;
-        html += `<td style="color: #ef4444;">₹${{row.low.toFixed(2)}}</td>`;
         html += `<td style="font-weight: 600;">₹${{row.close.toFixed(2)}}</td>`;
-        html += `<td>${{row.volume.toLocaleString()}}</td>`;
-        html += `<td style="${{changeClass}}">₹${{row.change ? row.change.toFixed(2) : '0.00'}}</td>`;
-        html += `<td style="${{changeClass}}">${{row.change_pct ? row.change_pct.toFixed(2) : '0.00'}}%</td>`;
+        html += `<td>${{(row.volume / 1000).toFixed(0)}}K</td>`;
+        html += `<td style="${{changeClass}}">${{row.change_pct ? row.change_pct.toFixed(1) : '0.0'}}%</td>`;
+        html += `<td>₹${{row.ema_4 ? row.ema_4.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td>₹${{row.ema_9 ? row.ema_9.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td>₹${{row.ema_18 ? row.ema_18.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td>₹${{row.ema_50 ? row.ema_50.toFixed(1) : 'N/A'}}</td>`;
+        html += `<td style="${{trendClass}}">${{trendIcon}} ${{row.ema_trend || 'neutral'}}</td>`;
         html += '</tr>';
     }});
     

@@ -7,12 +7,56 @@ Uses SQLite for simplicity and portability.
 import sqlite3
 import os
 import pandas as pd
+import numpy as np
 from datetime import date, datetime
 from typing import List, Dict, Any, Optional
 import logging
 
 # Database file path
 DB_PATH = "data/stock_data.db"
+
+def calculate_ema(prices: pd.Series, period: int) -> pd.Series:
+    """
+    Calculate Exponential Moving Average (EMA) for given prices and period.
+    
+    Args:
+        prices: Series of prices (usually close prices)
+        period: EMA period (e.g., 4, 9, 18, 50, 200)
+    
+    Returns:
+        Series of EMA values
+    """
+    return prices.ewm(span=period, adjust=False).mean()
+
+def add_ema_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add EMA columns to DataFrame based on close prices.
+    
+    Args:
+        df: DataFrame with 'close' column
+    
+    Returns:
+        DataFrame with additional EMA columns
+    """
+    if 'close' not in df.columns or df.empty:
+        return df
+    
+    # Sort by date to ensure proper EMA calculation
+    df = df.sort_values('date').copy()
+    
+    # Calculate EMAs
+    df['ema_4'] = calculate_ema(df['close'], 4)
+    df['ema_9'] = calculate_ema(df['close'], 9) 
+    df['ema_18'] = calculate_ema(df['close'], 18)
+    df['ema_50'] = calculate_ema(df['close'], 50)
+    df['ema_200'] = calculate_ema(df['close'], 200)
+    
+    # Round EMA values to 2 decimal places
+    ema_columns = ['ema_4', 'ema_9', 'ema_18', 'ema_50', 'ema_200']
+    for col in ema_columns:
+        df[col] = df[col].round(2)
+    
+    return df
 
 def init_database():
     """Initialize database and create tables if they don't exist."""
@@ -33,10 +77,26 @@ def init_database():
             close REAL NOT NULL,
             volume INTEGER NOT NULL,
             traded_value REAL,
+            ema_4 REAL,
+            ema_9 REAL,
+            ema_18 REAL,
+            ema_50 REAL,
+            ema_200 REAL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(symbol, date)
         )
     """)
+    
+    # Add EMA columns to existing table if they don't exist
+    try:
+        cursor.execute("ALTER TABLE daily_ohlc ADD COLUMN ema_4 REAL")
+        cursor.execute("ALTER TABLE daily_ohlc ADD COLUMN ema_9 REAL") 
+        cursor.execute("ALTER TABLE daily_ohlc ADD COLUMN ema_18 REAL")
+        cursor.execute("ALTER TABLE daily_ohlc ADD COLUMN ema_50 REAL")
+        cursor.execute("ALTER TABLE daily_ohlc ADD COLUMN ema_200 REAL")
+    except sqlite3.OperationalError:
+        # Columns already exist
+        pass
     
     # Create index for faster queries
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_symbol_date ON daily_ohlc(symbol, date)")
@@ -81,12 +141,21 @@ def store_ohlc_data(symbol: str, df: pd.DataFrame) -> int:
         df['traded_value'] = df['close'] * df['volume']
         
         # Convert date to string format for SQLite
-        if not isinstance(df['date'].iloc[0], str):
-            df['date'] = df['date'].dt.strftime('%Y-%m-%d')
+        # Handle timezone-aware dates by converting to naive dates
+        if pd.api.types.is_datetime64_any_dtype(df['date']):
+            # Convert timezone-aware datetime to date string
+            df['date'] = pd.to_datetime(df['date']).dt.strftime('%Y-%m-%d')
+        elif not isinstance(df['date'].iloc[0], str):
+            # If it's not a string and not datetime, convert to string
+            df['date'] = df['date'].astype(str)
         
-        # Select only required columns
-        columns = ['symbol', 'date', 'open', 'high', 'low', 'close', 'volume', 'traded_value']
-        df_clean = df[columns]
+        # Add EMA calculations based on close prices
+        df_with_emas = add_ema_columns(df)
+        
+        # Select required columns including EMAs
+        columns = ['symbol', 'date', 'open', 'high', 'low', 'close', 'volume', 'traded_value', 
+                  'ema_4', 'ema_9', 'ema_18', 'ema_50', 'ema_200']
+        df_clean = df_with_emas[columns]
         
         # Use INSERT OR REPLACE to handle duplicates
         df_clean.to_sql('daily_ohlc', conn, if_exists='append', index=False, method='multi')
@@ -110,6 +179,88 @@ def store_ohlc_data(symbol: str, df: pd.DataFrame) -> int:
         logging.error(f"Error storing OHLC data for {symbol}: {e}")
         conn.rollback()
         return 0
+    finally:
+        conn.close()
+
+def update_emas_for_symbol(symbol: str) -> bool:
+    """
+    Recalculate and update EMAs for a specific symbol using all historical data.
+    This ensures accurate EMA calculations based on complete price history.
+    
+    Args:
+        symbol: Stock symbol to update
+    
+    Returns:
+        True if successful, False otherwise
+    """
+    conn = sqlite3.connect(DB_PATH)
+    
+    try:
+        # Get all historical data for the symbol, ordered by date
+        query = """
+            SELECT date, close, id
+            FROM daily_ohlc 
+            WHERE symbol = ? 
+            ORDER BY date
+        """
+        df = pd.read_sql_query(query, conn, params=[symbol])
+        
+        if df.empty:
+            return False
+        
+        # Calculate EMAs for the complete dataset
+        df['ema_4'] = calculate_ema(df['close'], 4)
+        df['ema_9'] = calculate_ema(df['close'], 9)
+        df['ema_18'] = calculate_ema(df['close'], 18)
+        df['ema_50'] = calculate_ema(df['close'], 50)
+        df['ema_200'] = calculate_ema(df['close'], 200)
+        
+        # Round EMA values
+        ema_columns = ['ema_4', 'ema_9', 'ema_18', 'ema_50', 'ema_200']
+        for col in ema_columns:
+            df[col] = df[col].round(2)
+        
+        # Update database with calculated EMAs
+        cursor = conn.cursor()
+        for _, row in df.iterrows():
+            cursor.execute("""
+                UPDATE daily_ohlc 
+                SET ema_4 = ?, ema_9 = ?, ema_18 = ?, ema_50 = ?, ema_200 = ?
+                WHERE id = ?
+            """, (row['ema_4'], row['ema_9'], row['ema_18'], 
+                  row['ema_50'], row['ema_200'], row['id']))
+        
+        conn.commit()
+        return True
+        
+    except Exception as e:
+        logging.error(f"Error updating EMAs for {symbol}: {e}")
+        conn.rollback()
+        return False
+    finally:
+        conn.close()
+
+def update_all_emas() -> None:
+    """Update EMAs for all symbols in the database."""
+    conn = sqlite3.connect(DB_PATH)
+    
+    try:
+        # Get all unique symbols
+        cursor = conn.cursor()
+        cursor.execute("SELECT DISTINCT symbol FROM daily_ohlc ORDER BY symbol")
+        symbols = [row[0] for row in cursor.fetchall()]
+        
+        logging.info(f"Updating EMAs for {len(symbols)} symbols...")
+        
+        success_count = 0
+        for i, symbol in enumerate(symbols, 1):
+            if update_emas_for_symbol(symbol):
+                success_count += 1
+                if i % 50 == 0:
+                    logging.info(f"Progress: {i}/{len(symbols)} symbols processed")
+        
+        logging.info(f"EMA update completed. Success: {success_count}/{len(symbols)}")
+        
     finally:
         conn.close()
 
@@ -228,7 +379,8 @@ def get_data_for_date(target_date: str, limit: Optional[int] = None) -> pd.DataF
     
     try:
         query = """
-            SELECT symbol, date, open, high, low, close, volume, traded_value
+            SELECT symbol, date, open, high, low, close, volume, traded_value,
+                   ema_4, ema_9, ema_18, ema_50, ema_200
             FROM daily_ohlc 
             WHERE date = ? 
             ORDER BY traded_value DESC
