@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+.env
+tokens.json
+*.log
+
+# Data directories (keep structure but ignore content)
+cache/*.csv
+data/stock_data.db
+data/stock_data.db-*
+
+# Output directories
+out/*/
+!out/.gitkeep
+
+# Deployment
+.deploy/
+.vercel/
+.netlify/
+
+# Temporary files
+*.tmp
+*.temp
