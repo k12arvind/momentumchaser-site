@@ -737,12 +737,19 @@ def main():
     html = render_html(date_str, df, ema_df)
     (SITE / "index.html").write_text(html, encoding="utf-8")
 
-    # copy CSVs
-    df.to_csv(DATA_DIR / "latest.csv", index=False)
-    
-    # Copy EMA CSV if available
+    # Merge EMA data with scan results if available
     if ema_df is not None:
+        # Add essential EMA columns to scan results
+        ema_columns = ['symbol', 'ema_9', 'ema_50', 'above_ema_9', 'above_ema_50', 'ema_trend']
+        ema_subset = ema_df[ema_columns]
+        df_enhanced = df.merge(ema_subset, on='symbol', how='left')
+        df_enhanced.to_csv(DATA_DIR / "latest.csv", index=False)
+        print(f"Enhanced scan results with EMA data: {df_enhanced['ema_9'].notna().sum()}/{len(df_enhanced)} symbols")
+        # Also keep the separate EMA CSV
         ema_df.to_csv(DATA_DIR / "latest_ema.csv", index=False)
+    else:
+        # Fallback to original scan results
+        df.to_csv(DATA_DIR / "latest.csv", index=False)
     
     # also save an archived CSV
     df.to_csv(ARCHIVE / f"{date_str}.csv", index=False)
